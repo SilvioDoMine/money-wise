@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -11,6 +12,20 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
+    /**
+     * Nome do tipo de documento CPF.
+     *
+     * @var int
+     */
+    const CPF_NAME = 'customer';
+
+    /**
+     * Nome do tipo de documento CNPJ.
+     *
+     * @var int
+     */
+    const CNPJ_NAME = 'store';
 
     /**
      * The attributes that are mass assignable.
@@ -43,4 +58,31 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    /**
+     * Retorna a relação com o tipo de documento do usuário.
+     *
+     * @return BelongsTo
+     */
+    public function documentType(): BelongsTo
+    {
+        return $this->belongsTo(DocumentType::class);
+    }
+
+    /**
+     * Retorna a função do usuário, baseado em seu tipo de documento.
+     *
+     * @return string
+     */
+    public function role(): string
+    {
+        switch ($this->document_type_id) {
+            case DocumentType::CPF_ID:
+                return self::CPF_NAME;
+            case DocumentType::CNPJ_ID:
+                return self::CNPJ_NAME;
+            default:
+                throw new Exception("There is no role assigned to the document type id {$this->document_type_id}.");
+        }
+    }
 }

@@ -13,8 +13,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // System seeders
         $this->call([
             DocumentTypeSeeder::class,
+        ]);
+
+        if (config('app.env') === 'production') {
+            return;
+        }
+
+        // Testing seeders
+        $this->call([
+            UserSeeder::class,
         ]);
     }
 }
