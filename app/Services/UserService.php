@@ -9,6 +9,32 @@ use Exception;
 class UserService
 {
     /**
+     * Loga o usuário e retorna o seu token, com seus dados.
+     *
+     * @param array $userInformation
+     * @return array
+     */
+    public function login(array $userInformation): array
+    {
+        if (! auth()->attempt($userInformation)) {
+            return [
+                'success' => false,
+                'message' => "E-mail or password are incorrect.",
+            ];
+        }
+
+        $user = User::where('email', '=', $userInformation['email'])
+            ->firstOrFail();
+
+        return [
+            'success' => true,
+            'message' => [
+                'token' => "Bearer {$user->createToken('auth_token')->plainTextToken}",
+            ],
+        ];
+    }
+
+    /**
      * Retorna a função do usuário, baseado em seu tipo de documento.
      *
      * @return string
