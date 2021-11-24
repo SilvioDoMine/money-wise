@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Transaction extends Model
 {
@@ -43,6 +44,21 @@ class Transaction extends Model
         'requested_amount',
     ];
 
+    /**
+     * Retorna a relação da taxa cobrada na transação.
+     *
+     * @return HasOne
+     */
+    public function fee(): HasOne
+    {
+        return $this->hasOne(TransactionFee::class);
+    }
+
+    /**
+     * Retorna a lista de status da transação.
+     *
+     * @return HasMany
+     */
     public function statuses(): HasMany
     {
         return $this->hasMany(TransactionStatus::class);
