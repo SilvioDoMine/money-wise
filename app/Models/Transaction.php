@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Transaction extends Model
 {
@@ -41,4 +42,9 @@ class Transaction extends Model
         'to',
         'requested_amount',
     ];
+
+    public function statuses(): HasMany
+    {
+        return $this->hasMany(TransactionStatus::class);
+    }
 }
