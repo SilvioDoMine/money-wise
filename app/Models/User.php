@@ -100,21 +100,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Transaction::class, 'to');
     }
-
-    /**
-     * Retorna a função do usuário, baseado em seu tipo de documento.
-     *
-     * @return string
-     */
-    public function role(): string
-    {
-        switch ($this->document_type_id) {
-            case DocumentType::CPF_ID:
-                return self::CPF_NAME;
-            case DocumentType::CNPJ_ID:
-                return self::CNPJ_NAME;
-            default:
-                throw new Exception("There is no role assigned to the document type id {$this->document_type_id}.");
-        }
-    }
 }
