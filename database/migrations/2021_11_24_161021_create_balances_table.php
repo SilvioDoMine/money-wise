@@ -18,7 +18,6 @@ class CreateBalancesTable extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->decimal('amount');
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

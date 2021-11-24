@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Balance extends Model
 {
     use HasFactory;
-    use SoftDeletes;
 
     /**
      * Atributos que podem receber atribuções em massa.
