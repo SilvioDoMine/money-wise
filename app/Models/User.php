@@ -5,6 +5,7 @@ namespace App\Models;
 use Exception;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -78,6 +79,26 @@ class User extends Authenticatable
     public function documentType(): BelongsTo
     {
         return $this->belongsTo(DocumentType::class);
+    }
+
+    /**
+     * Retorna a relação de todas as transações realizadas pelo usuário.
+     *
+     * @return HasMany
+     */
+    public function transactionsMade(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'from');
+    }
+
+    /**
+     * Retorna a relação de todas as transações recebidas pelo usuário.
+     *
+     * @return HasMany
+     */
+    public function transactionsReceived(): HasMany
+    {
+        return $this->hasMany(Transaction::class, 'to');
     }
 
     /**
