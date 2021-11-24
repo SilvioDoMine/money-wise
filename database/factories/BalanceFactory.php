@@ -15,7 +15,7 @@ class BalanceFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => fn () => User::factory()->create()->id,
+            'user_id' => User::factory(),
             'amount' => $this->faker->randomFloat(2, 0, 1000),
         ];
     }

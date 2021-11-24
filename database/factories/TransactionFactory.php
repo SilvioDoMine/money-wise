@@ -23,8 +23,8 @@ class TransactionFactory extends Factory
 
         return [
             'type' => $this->faker->randomElement($typeList),
-            'from' => fn () => User::factory()->withCpf()->create(),
-            'to' => fn () => User::factory()->create(),
+            'from' => User::factory()->withCpf(),
+            'to' => User::factory(),
             'requested_amount' => $this->faker->randomFloat(2, 5, 100),
         ];
     }
