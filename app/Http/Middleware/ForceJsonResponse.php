@@ -3,7 +3,6 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ForceJsonResponse
@@ -19,18 +18,6 @@ class ForceJsonResponse
     public function handle(Request $request, Closure $next)
     {
         $request->headers->set('Accept', 'application/json');
-
-        $response = $next($request);
-
-        // If the response is not strictly a JsonResponse, we make it
-        if (!$response instanceof JsonResponse) {
-            $response = $this->responseFactory->json(
-                $response->content(),
-                $response->status(),
-                $response->headers->all()
-            );
-        }
-
-        return $response;
+        return $next($request);
     }
 }
