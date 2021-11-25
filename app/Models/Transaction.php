@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -33,6 +34,22 @@ class Transaction extends Model
     const TYPE_DEBIT = 3;
 
     /**
+     * Quantidade da taxa cobrada a cada transação do sistema.
+     * Valor fixo em reais.
+     *
+     * @var float
+     */
+    const FEE_TRANSACTION = 1.00;
+
+    /**
+     * Quantidade da porcentagem cobrada através de uma transação por cartão de crédito.
+     * Valor percentual.
+     * 
+     * @var float
+     */
+    const FEE_CREDIT = 3.00;
+
+    /**
      * Atributos que podem receber atribuções em massa.
      *
      * @var array
@@ -52,6 +69,26 @@ class Transaction extends Model
     public function fee(): HasOne
     {
         return $this->hasOne(TransactionFee::class);
+    }
+
+    /**
+     * Retorna a relação da transação com o usuário que está recebendo-a.
+     *
+     * @return BelongsTo
+     */
+    public function payee(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'to', 'id');
+    }
+
+    /**
+     * Retorna a relação da transação com o usuário que está realizando-a.
+     *
+     * @return BelongsTo
+     */
+    public function payer(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'from', 'id');
     }
 
     /**
