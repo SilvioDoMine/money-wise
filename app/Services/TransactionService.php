@@ -15,20 +15,19 @@ class TransactionService
         $this->userService = $userService;
     }
 
-    public function store(User $user, array $data)
+    /**
+     * Dá início a uma nova transação.
+     *
+     * @param User $user
+     * @param array $data
+     * @return bool
+     */
+    public function store(User $user, array $data): bool
     {
         if (! $this->canPerformTransaction($user)) {
             return false;
         }
 
-        $transaction = $this->beginTransaction($user, $data);
-        $this->processTransaction($transaction);
-
-        return true;
-    }
-
-    private function beginTransaction(User $user, array $data)
-    {
         $transaction = new Transaction();
         $transaction->type = $data['type'];
         $transaction->from = $user->id;
@@ -36,11 +35,7 @@ class TransactionService
         $transaction->requested_amount = $data['amount'];
         $transaction->save();
 
-        $transaction->statuses()->create([
-            'status' => TransactionStatus::STATUS_PENDING,
-        ]);
-
-        return $transaction;
+        return true;
     }
 
     /**
@@ -64,11 +59,10 @@ class TransactionService
      * * Toda transação é cobrada a taxa de 1 R$. Essa taxa é paga por quem realiza, exceto no caso de loja.
      * * Nas transações via cartão de crédito, quem envia o dinheiro também paga uma taxa de 3% do valor da transação.
      *
-     * @param User $user
-     * @param array $data
+     * @param Transaction $transaction
      * @return void
      */
-    private function processTransaction(Transaction $transaction)
+    public function processTransaction(Transaction $transaction)
     {
         $feePayerId = $this->userService->getRole($transaction->payee) == User::CNPJ_NAME ?
             $transaction->payee->id :
