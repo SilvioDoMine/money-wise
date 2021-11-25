@@ -23,13 +23,17 @@ class TransactionController extends Controller
      */
     public function store(TransactionRequest $request): JsonResponse
     {
+        $response = $this->service->store(
+            $request->user(),
+            $request->validated()
+        );
+
         return response()
-            ->json(
-                $this->service->store(
-                    $request->user(),
-                    $request->validated()
-                ),
-                200
-            );
+            ->json([
+                'success' => $response,
+                'message' => $response ?
+                    'Sua transação foi iniciada. Nos te notificaremos quando ela for concluída. Você pode conferir o status de todas suas transações.' :
+                    'Infelizmente usuários do tipo LOJA não pode realizar uma transação.',
+            ]);
     }
 }

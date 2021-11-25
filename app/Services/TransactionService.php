@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\TransactionJob;
 use App\Models\Transaction;
 use App\Models\User;
 
@@ -33,6 +34,9 @@ class TransactionService
         $transaction->to = $data['payee'];
         $transaction->requested_amount = $data['amount'];
         $transaction->save();
+
+        TransactionJob::dispatch($transaction)
+            ->onQueue('default');
 
         return true;
     }
