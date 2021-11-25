@@ -32,6 +32,7 @@ class RouteServiceProvider extends ServiceProvider
      * Define your route model bindings, pattern filters, etc.
      *
      * @return void
+     * @SuppressWarnings(PHPMD)
      */
     public function boot()
     {
@@ -53,6 +54,7 @@ class RouteServiceProvider extends ServiceProvider
      * Configure the rate limiters for the application.
      *
      * @return void
+     * @SuppressWarnings(PHPMD)
      */
     protected function configureRateLimiting()
     {

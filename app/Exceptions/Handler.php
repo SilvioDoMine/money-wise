@@ -31,6 +31,7 @@ class Handler extends ExceptionHandler
      * Register the exception handling callbacks for the application.
      *
      * @return void
+     * @SuppressWarnings(PHPMD)
      */
     public function register()
     {
