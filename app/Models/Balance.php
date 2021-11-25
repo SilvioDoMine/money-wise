@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Balance extends Model
 {
@@ -16,8 +15,16 @@ class Balance extends Model
      * @var array
      */
     public $fillable = [
-        'id',
         'user_id',
         'amount'
+    ];
+
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'amount' => 0.00,
     ];
 }
