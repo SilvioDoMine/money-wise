@@ -68,7 +68,7 @@ class TransactionService
             $transaction->payee->id :
             $transaction->payer->id;
 
-        $transaction->fee()->create([
+        $transaction->fees()->create([
             'user_id' => $feePayerId,
             'amount' => Transaction::FEE_TRANSACTION,
         ]);
@@ -76,7 +76,7 @@ class TransactionService
         $fee = $this->calculateCreditFee($transaction);
 
         if ($fee > 0.00) {
-            $transaction->fee()->create([
+            $transaction->fees()->create([
                 'user_id' => $transaction->payer->id,
                 'amount' => $fee,
             ]);

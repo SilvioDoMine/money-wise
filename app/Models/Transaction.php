@@ -64,11 +64,11 @@ class Transaction extends Model
     /**
      * Retorna a relação da taxa cobrada na transação.
      *
-     * @return HasOne
+     * @return HasMany
      */
-    public function fee(): HasOne
+    public function fees(): HasMany
     {
-        return $this->hasOne(TransactionFee::class);
+        return $this->hasMany(TransactionFee::class);
     }
 
     /**
